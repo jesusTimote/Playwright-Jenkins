@@ -23,7 +23,8 @@ pipeline {
                     npx playwright install
 
                     """)
-                } else{
+                } 
+                else{
                     bat(script:"""
                     java --version
                     node -v
@@ -31,13 +32,32 @@ pipeline {
                     npx playwright install    
 
                     """)
-                }finally{
-                    publishReport()
                 }
             }
           }
      }
+
+      stage('Execute Tests'){
+        steps{
+             script{
+                    try{
+                        if(isUnix()){
+                            echo "Executing tag: ${params.TAGS}"
+                            sh 'npm run test-dev --tag="${params.TAGS}"'
+                        }
+                        else {
+                            echo "Executing tag: ${params.TAGS}"
+                            bat 'npm run test-dev --tag="${params.TAGS}"'
+                        }
+                    } finally{
+                        publishReport();
+                    }
+                }
+        }
+      }
+
    }
+
 }
    def publishReport(){
     publishHTML(target: [

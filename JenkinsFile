@@ -21,16 +21,15 @@ pipeline {
                     node -v
                     npm install
                     npx playwright install
-
                     """)
                 } 
                 else{
                     bat(script:"""
                     java --version
                     node -v
+                    npx playwright install
                     npm install
-                    npx playwright install    
-
+                        
                     """)
                 }
             }

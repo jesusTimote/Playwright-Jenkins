@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    tools {
+        maven 'maven'
+        jdk 'JDK11'
+    }
+    
+    environment {
+        EXECUTIONDIR   = "${WORKSPACE}"
+        WORKDIR = 'scotiabank-continuous-testing_pricing-avanzado'
+        http_proxy = 'http://transparentproxy.bns:8080'
+        https_proxy = "${http_proxy}"
+        no_proxy = '.bns,.dev'        
+    }
+    parameters {
+        string(name: 'TAGS', defaultValue: '@pricing', description: 'Cucumber tags for the test, example @automated, @manual, @DFPORTALOB-31-002 etc ')
+        choice(name: 'ENVIRONMENT', choices: ['uat', 'dev'], description: 'Choice environment dev or uat')
+
+    }
+    
+
+
+                                    sh(label: "Build", script: """
+                                        export NO_PROXY="af.cds.bns"
+                                mkdir -p reports
+                                mkdir -p allure-report
+                                node -v 
+                                ls -lha
+                                npm cache clean --force
+                                npm ci
+                                npm i @cucumber/messages
+                                npm i @cucumber/gherkin
+                                npm i allure-playwright
+                                npm i -D @playwright/test allure-playwright
+                                npm i @cucumber/cucumber
+                                npx playwright install-deps     
+                                npm i -D @playwright/test
+                                npx playwright install
+                                npm install -g http-server
+                                npm run allure-test-${ENVIRONMENT} -- --tags="${TAGS}"
+                                ls reports
+                                ls allure-report
+                                ls allure-results
+                                        """)
+                                
+                               
+}

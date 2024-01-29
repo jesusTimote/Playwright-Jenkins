@@ -27,5 +27,14 @@ pipeline {
           }
      }
    }
+
+   def publishReport(){
+    publishHTML(target: [
+        allowMissing: true,
+        reportDir: 'test-results\reports\index.html'
+
+        
+    ])
+   }
                                                    
 }

@@ -18,7 +18,6 @@ pipeline {
                 if(isUnix()){
                     sh(script:"""
                     java --version
-                    mkdir -p reports
                     node -v
                     npm install
                     npx playwright install
@@ -27,12 +26,13 @@ pipeline {
                 } else{
                     bat(script:"""
                     java --version
-                    mkdir -p reports
                     node -v
                     npm install
                     npx playwright install    
 
                     """)
+                }finally{
+                    publishReport()
                 }
             }
           }

@@ -6,7 +6,7 @@ pipeline {
     }
     
     parameters {
-        string(name: 'TAGS', defaultValue: '@pricing', description: 'Cucumber tags for the test, example @automated, @manual, @DFPORTALOB-31-002 etc ')
+        string(name: 'TAGS', defaultValue: '@login', description: 'Cucumber tags for the test, example @automated, @manual, @DFPORTALOB-31-002 etc ')
         choice(name: 'ENVIRONMENT', choices: ['uat', 'dev'], description: 'Choice environment dev or uat')
 
     }
@@ -20,6 +20,15 @@ pipeline {
                     java --version
                     mkdir -p reports
                     node -v
+                    npm i @cucumber/messages
+                    npm i @cucumber/gherkin
+                    npm i allure-playwright
+                    npm i -D @playwright/test allure-playwright
+                    npm i @cucumber/cucumber
+                    npx playwright install    
+                    npm i -D @playwright/test
+                    npx playwright install
+
                     
                     """)
                 } 

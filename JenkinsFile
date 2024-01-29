@@ -20,27 +20,17 @@ pipeline {
                     java --version
                     mkdir -p reports
                     node -v
-                    npm i @cucumber/messages
-                    npm i @cucumber/gherkin
-                    npm i allure-playwright
-                    npm i -D @playwright/test allure-playwright
-                    npm i @cucumber/cucumber
-                    npx playwright install    
-                    npm i -D @playwright/test
+                    npm install
                     npx playwright install
 
-                    
                     """)
                 } else{
                     bat(script:"""
                     java --version
                     mkdir -p reports
                     node -v
-                    npm i @cucumber/gherkin
-                    npm i allure-playwright
-                    npm i @cucumber/cucumber
+                    npm install
                     npx playwright install    
-                    npm i -D @playwright/test
 
                     """)
                 }

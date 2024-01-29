@@ -31,7 +31,23 @@ pipeline {
 
                     
                     """)
-                } 
+                } else{
+                    bat(script:"""
+                    java --version
+                    mkdir -p reports
+                    node -v
+                    npm i @cucumber/messages
+                    npm i @cucumber/gherkin
+                    npm i allure-playwright
+                    npm i -D @playwright/test allure-playwright
+                    npm i @cucumber/cucumber
+                    npx playwright install    
+                    npm i -D @playwright/test
+                    npx playwright install
+
+                    
+                    """)
+                }
             }
           }
      }

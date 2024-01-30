@@ -35,11 +35,11 @@ pipeline {
                     try{
                         if(isUnix()){
                             echo "Executing tag: ${params.TAGS}"
-                            sh 'npm run test-dev --tag="${TAGS}"'
+                            sh 'npm run test-${ENV} --tag="${TAGS}"'
                         }
                         else {
                             echo "Executing tag: ${params.TAGS}"
-                            bat "npm run test-dev --tag=${params.TAGS}"
+                            bat "npm run test-${ENV} --tag=${params.TAGS}"
                         }
                     } finally{
                         publishReport();

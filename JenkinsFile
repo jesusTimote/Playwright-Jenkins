@@ -27,9 +27,8 @@ pipeline {
                     bat(script:"""
                     java --version
                     node -v
-                    npx playwright install
                     npm install
-                        
+                    npx playwright install 
                     """)
                 }
             }

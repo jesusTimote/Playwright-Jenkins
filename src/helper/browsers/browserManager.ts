@@ -1,7 +1,7 @@
 import { chromium, firefox, webkit } from "@playwright/test";
 
 const options = {
-    headless: false,
+    headless: true,
     args: [
         "--ignore-certificate-errors"
     ]

@@ -1,8 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'maven'
-        jdk 'JDK11'
+        nodejs 'NodeJS'
     }
     
     parameters {
@@ -17,7 +16,6 @@ pipeline {
             script{
                 if(isUnix()){
                     sh(script:"""
-                    java --version
                     node -v
                     npm install
                     npx playwright install
@@ -25,7 +23,6 @@ pipeline {
                 } 
                 else{
                     bat(script:"""
-                    java --version
                     node -v
                     npm install
                     npx playwright install 
@@ -45,7 +42,7 @@ pipeline {
                         }
                         else {
                             echo "Executing tag: ${params.TAGS}"
-                            bat 'npm run test-dev --tag="${params.TAGS}"'
+                            bat 'npm run test-dev .filter.tags="${params.SCENARIO_TAG}"'
                         }
                     } finally{
                         publishReport();
@@ -60,6 +57,7 @@ pipeline {
    def publishReport(){
     publishHTML(target: [
         allowMissing: true,
+        reportName: 'Playwriht Report',
         reportDir: 'test-results/reports/',
         reportFiles: 'index.html',
         keepAll: true,

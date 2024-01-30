@@ -43,7 +43,7 @@ pipeline {
                             bat "npm run cucumber-report"
                         }
                     } finally{
-                       
+                       publishReport();
                     }
                 }
         }
@@ -53,7 +53,7 @@ pipeline {
     stage('Execute Report'){
         steps{
              script{
-                    try{
+                 
                         if(isUnix()){
                             echo "Executing Report"
                             sh 'npm run cucumber-report'
@@ -62,9 +62,7 @@ pipeline {
                              echo "Executing Report"
                             bat "npm run cucumber-report"
                         }
-                    } finally{
-                        publishReport();
-                    }
+                    
                 }
         }
       }

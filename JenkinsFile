@@ -39,21 +39,25 @@ pipeline {
                         }
                         else {
                             echo "Executing tag: ${params.TAGS}"
-
                             bat "npm run test-${params.ENV} --tag=${params.TAGS}"
+                            bat "npm run cucumber-report"
                         }
-                    } 
+                    }
                 }
         }
       }
-       stage('Execute Report'){
+
+
+    stage('Execute Report'){
         steps{
              script{
                     try{
                         if(isUnix()){
-                    
+                            echo "Executing Report"
+                            sh 'npm run cucumber-report'
                         }
                         else {
+                             echo "Executing Report"
                             bat "npm run cucumber-report"
                         }
                     } finally{
@@ -62,8 +66,6 @@ pipeline {
                 }
         }
       }
-
-
    }
 
 }

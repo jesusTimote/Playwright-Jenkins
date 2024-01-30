@@ -22,11 +22,8 @@ pipeline {
                     """)
                 } 
                 else{
-                    bat(script:"""
-                    node -v
-                    npm install
-                    npx playwright install 
-                    """)
+                   bat "npm install"
+                   bat "npx playwright install"
                 }
             }
           }
@@ -63,8 +60,7 @@ pipeline {
         keepAll: true,
         alwaysLinkToLastBuild: true,
         allowMissing: false
-
-        
+ 
     ])
    }
                                                    

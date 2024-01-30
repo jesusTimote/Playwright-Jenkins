@@ -39,7 +39,7 @@ pipeline {
                         }
                         else {
                             echo "Executing tag: ${params.TAGS}"
-                            bat "npm run test-dev --tag='${params.TAGS}"
+                            bat "npm run test-dev --tag=${params.TAGS}"
                         }
                     } finally{
                         publishReport();

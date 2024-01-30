@@ -42,9 +42,7 @@ pipeline {
 
                             bat "npm run test-${params.ENV} --tag=${params.TAGS}"
                         }
-                    } finally{
-                        publishReport();
-                    }
+                    } 
                 }
         }
       }

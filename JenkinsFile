@@ -6,7 +6,7 @@ pipeline {
     
     parameters {
         string(name: 'TAGS', defaultValue: '@login', description: 'Cucumber tags for the test, example @automated, @manual, @DFPORTALOB-31-002 etc ')
-        choice(name: 'ENVIRONMENT', choices: ['uat', 'dev'], description: 'Choice environment dev or uat')
+        choice(name: 'ENV', choices: ['uat', 'dev'], description: 'Choice environment dev or uat')
 
     }
 
@@ -35,11 +35,11 @@ pipeline {
                     try{
                         if(isUnix()){
                             echo "Executing tag: ${params.TAGS}"
-                            sh 'npm run test-${ENV} --tag="${TAGS}"'
+                            sh 'npm run test-${params.ENV} --tag="${TAGS}"'
                         }
                         else {
                             echo "Executing tag: ${params.TAGS}"
-                            bat "npm run test-${ENV} --tag=${params.TAGS}"
+                            bat "npm run test-${params.ENV} --tag=${params.TAGS}"
                         }
                     } finally{
                         publishReport();

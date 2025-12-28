@@ -1,0 +1,67 @@
+name: E2E Playwright Cucumber
+
+on:
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: 'Ambiente de ejecución (dev o uat)'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - uat
+      tag_ejecucion:
+        description: 'Tag para filtrar escenarios (ej: @smoke, not @wip)'
+        required: true
+        default: '@smoke'
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    env:
+      AMBIENTE: ${{ github.event.inputs.ambiente }}
+      TAG_EJECUCION: ${{ github.event.inputs.tag_ejecucion }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npx playwright install --with-deps
+
+      - name: Init reports folder
+        run: |
+          npm run init
+          ls -l reports
+
+      - name: Run Cucumber tests
+        run: |
+          if [ "$AMBIENTE" = "dev" ]; then
+            npm run cucumber-test-dev -- --tags "$TAG_EJECUCION" --format json:./reports/cucumber_report.json
+          else
+            npm run cucumber-test-uat -- --tags "$TAG_EJECUCION" --format json:./reports/cucumber_report.json
+          fi
+          ls -l reports
+
+      - name: Generate Cucumber HTML report
+        if: always()
+        run: |
+          npm run cucumber-report
+          ls -l reports
+
+      - name: Upload Cucumber HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-html-${{ env.AMBIENTE }}
+          path: reports/cucumber_report.html
+          if-no-files-found: error
